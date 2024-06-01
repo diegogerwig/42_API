@@ -1,5 +1,14 @@
+DOCKER_NAME = 42_evaluators
+
 TEMPL ?= templ
 GO ?= go
+
+all: create_docker_env
+
+create_docker_env:
+	echo "🟡 Building Docker with PYTHON 3.10"; \
+	docker build -t $(DOCKER_NAME) .; \
+	docker run -it $(DOCKER_NAME); \
 
 default: dev
 
@@ -30,12 +39,17 @@ debug: dev
 
 build: deps 42evaluators
 
-clean:
-	$(RM) $(TEMPLATES)
-
 deps:
 	@if ! which templ >/dev/null 2>&1 ; then \
 		$(GO) install github.com/a-h/templ/cmd/templ@latest; \
 	fi
 
-.PHONY: default templates dev build clean deps
+clean:
+	$(RM) $(TEMPLATES)
+
+fclean:	clean
+	$(RM) 42evaluators
+
+re:	fclean all
+
+.PHONY: default templates dev build clean deps all re create_docker_env fclean
