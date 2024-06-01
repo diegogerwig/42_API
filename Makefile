@@ -3,13 +3,6 @@ DOCKER_NAME = 42_evaluators
 TEMPL ?= templ
 GO ?= go
 
-all: create_docker_env
-
-create_docker_env:
-	echo "🟡 Building Docker with PYTHON 3.10"; \
-	docker build -t $(DOCKER_NAME) .; \
-	docker run -it $(DOCKER_NAME); \
-
 default: dev
 
 TEMPLATES = $(patsubst %.templ,%_templ.go,$(wildcard web/templates/*.templ))
@@ -43,6 +36,13 @@ deps:
 	@if ! which templ >/dev/null 2>&1 ; then \
 		$(GO) install github.com/a-h/templ/cmd/templ@latest; \
 	fi
+
+docker: create_docker_env
+
+create_docker_env:
+	echo "🟡 Building Docker"; \
+	docker build -t $(DOCKER_NAME) .; \
+	docker run -it $(DOCKER_NAME); \
 
 clean:
 	$(RM) $(TEMPLATES)

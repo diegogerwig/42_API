@@ -1,6 +1,6 @@
 # 42evaluators
 
-Welcome to the **42evaluators** GitHub repository!
+Welcome to the **42evaluators**
 
 ## Running
 
