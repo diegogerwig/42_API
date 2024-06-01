@@ -21,15 +21,3 @@ Finally, you can use the Makefile to launch 42evaluators: `make`
 
 This will generate API keys, and start fetching a bunch of stuff (such as
 projects, which takes a lot of time...). You can open up `localhost:8080`.
-
-## Backstory
-
-A few months ago, some students from 42 Le Havre noticed 42evaluators.com went down.
-We decided to email the previous owner, @rfautier, to try to keep maintaining
-the code ourselves.
-
-After he agreed, we checked the code, but many parts of it would have needed to
-be replaced if we wanted to keep the code clean.
-
-Since I liked Go, I decided to rewrite it completly in Go. But the other students
-didn't like that language, so I ended up rewriting most of it myself.
