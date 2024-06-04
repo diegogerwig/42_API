@@ -1,5 +1,5 @@
 .env
-42_users_ranking_*
+data/
 
 __pycache__/
 *.pyc
