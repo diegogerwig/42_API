@@ -1,12 +1,11 @@
-# import sys
-# import os
-# sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
 import requests
 import time
 import csv
 from datetime import datetime
+import os
 from get_token_42 import get_access_token
+
+
 
 def get_user_data(access_token):
     headers = {
@@ -64,10 +63,14 @@ def get_user_data(access_token):
     for user in sorted_user_info:
         print(f"User: {user['login']} - Level: {user.get('cursus_level')}")
 
+    data_folder = "data"
     current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
     csv_filename = f"42_users_ranking_{current_time}.csv"
+    csv_path = os.path.join(data_folder, csv_filename)
+    if not os.path.exists(data_folder):
+        os.makedirs(data_folder)
 
-    with open(csv_filename, 'w', newline='') as csvfile:
+    with open(csv_path, 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(['User', 'Cursus Level'])
 
