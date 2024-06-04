@@ -3,6 +3,7 @@ import time
 import csv
 from datetime import datetime
 import os
+from tqdm import tqdm
 from get_token_42 import get_access_token
 
 
@@ -44,6 +45,8 @@ def get_user_data(access_token):
     print(f"\n✅ Users info: {all_user_info}")
     print(f"\n✅ Number of users: {len(all_user_info)}")
 
+    progress_bar = tqdm(all_user_info, desc="Fetching user data", unit="user")
+
     for user in all_user_info:
         user_response = requests.get(f"https://api.intra.42.fr/v2/users/{user['id']}", headers=headers)
         user_response.raise_for_status()
@@ -54,6 +57,10 @@ def get_user_data(access_token):
         for cursus_user in cursus_users_info:
             if cursus_user['cursus']['slug'] == '42cursus':
                 user['cursus_level'] = cursus_user['level']
+
+        progress_bar.set_postfix({'Cursus Level': user.get('cursus_level', 'N/A')})
+
+    progress_bar.close()
 
     print(f"\n✅ Updated Users info: {all_user_info}")
 
