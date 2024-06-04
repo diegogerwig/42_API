@@ -28,8 +28,9 @@ def get_user_data(access_token):
                     {'login': user['login'], 'id': user['id']}
                     for user in campus_users_response
                     # if not user.get('staff?') and (user.get('pool_year') == '2021' or user.get('pool_year') == '2022')
-                    if not user.get('staff?') and user.get('active?') and user.get('pool_year') == '2021'
+                    # if not user.get('staff?') and user.get('active?') and user.get('pool_year') == '2021'
                     # if not user.get('staff?') and user.get('active?') and (user.get('pool_year') == '2021' or user.get('pool_year') == '2022')
+                    if not user.get('staff?') and user.get('pool_year') == '2021' and user.get('pool_month') == 'april'
                 ]
                 all_user_info.extend(user_info)
 
@@ -49,14 +50,16 @@ def get_user_data(access_token):
     progress_bar = tqdm(all_user_info, desc="Fetching user data", unit="user")
 
     for user in all_user_info:
+        time.sleep(0.6)
         user_response = requests.get(f"https://api.intra.42.fr/v2/users/{user['id']}", headers=headers)
         user_response.raise_for_status()
         users_info = user_response.json()
         cursus_users_info = users_info['cursus_users']
 
-        time.sleep(0.5)
+
         for cursus_user in cursus_users_info:
-            if cursus_user['cursus']['slug'] == '42cursus':
+            # if cursus_user['cursus']['slug'] == '42cursus' and cursus_user['end_at'] is not None:  #detecta outer core y freeze(necesita más condiciones)
+            if cursus_user['cursus']['slug'] == '42cursus' and cursus_user['grade'] == 'Member' and cursus_user['level'] != '0.00':
                 user['cursus_level'] = cursus_user['level']
                 formatted_level = f"{user['cursus_level']:.2f}"
                 progress_bar.update()
@@ -69,15 +72,17 @@ def get_user_data(access_token):
 
     print("\n✅ Sorted Users info (Highest to Lowest Level):")
     for user in sorted_user_info:
-        cursus_level = user.get('cursus_level', 0.0)  
+        cursus_level = user.get('cursus_level', 0.00)  
         try:
             formatted_level = f"{float(cursus_level):.2f}" 
+            if cursus_level < 10:
+                formatted_level = f"{formatted_level} " 
         except ValueError:
             formatted_level = user.get('cursus_level', 'N/A')  
 
         print(f"User: {user['login']} \t- Level: {formatted_level}")
 
-    data_folder = 'data'
+    data_folder = '/app/data'
     current_time = datetime.now().strftime("%Y%m%d_%H%M%S")
     csv_filename = f"42_users_ranking_{current_time}.csv"
     csv_path = os.path.join(data_folder, csv_filename)
