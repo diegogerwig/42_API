@@ -7,7 +7,6 @@ from tqdm import tqdm
 from get_token_42 import get_access_token
 
 
-
 def get_user_data(access_token):
     headers = {
         'Authorization': f'Bearer {access_token}'
@@ -85,6 +84,7 @@ def get_user_data(access_token):
             csvwriter.writerow([user['login'], user.get('cursus_level')])
 
     print(f"\n✅ CSV file '{csv_filename}' has been created.")
+
 
 if __name__ == "__main__":
     access_token = get_access_token()
