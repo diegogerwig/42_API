@@ -1,4 +1,5 @@
 # API 42
+![](./img/42_API.png)
 
 ## INFO
 - [42_API Get started](https://api.intra.42.fr/apidoc/guides/getting_started)
