@@ -1,13 +1,7 @@
 .env
-*_templ.go
-db/42evaluators-dev.sqlite3
-db/42evaluators-dev.sqlite3-journal
-.*.swp
+42_users_ranking_*
 
-# Devenv
-.devenv*
-devenv.local.nix
-# direnv
-.direnv
-# pre-commit
-.pre-commit-config.yaml
+__pycache__/
+*.pyc
+
+42_Evaluators_demostanisxxx/
